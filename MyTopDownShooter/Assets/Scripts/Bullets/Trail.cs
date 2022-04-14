@@ -7,8 +7,6 @@ using RAndom = UnityEngine.Random;
 public class Trail : MonoBehaviour
 {
     public Shooting shoting; 
-
-    public Vector3 targetPoint;
     public float speed;
 
     public float timeToDestroy = 0.4f;
@@ -16,10 +14,9 @@ public class Trail : MonoBehaviour
 
     private void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, targetPoint, currentTimeToDestroy / timeToDestroy);
+        transform.position += transform.forward * speed * Time.deltaTime;
 
-
-        if(currentTimeToDestroy < timeToDestroy)
+        if (currentTimeToDestroy < timeToDestroy)
         {
             currentTimeToDestroy += Time.deltaTime;
         }

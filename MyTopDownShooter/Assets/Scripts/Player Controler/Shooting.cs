@@ -6,6 +6,8 @@ using UnityEngine.Pool;
 public class Shooting : MonoBehaviour
 {
 
+    public float damage;
+
     public LayerMask layerMask;
 
     public Trail trailPrefab;
@@ -19,6 +21,9 @@ public class Shooting : MonoBehaviour
     {
         pool = new ObjectPool<Trail>(() =>{
             Trail trail = Instantiate(trailPrefab);
+            trail.transform.position = transform.position;
+            trail.transform.rotation = transform.rotation;
+
             trail.shoting = this;
             return trail;
             
@@ -26,14 +31,15 @@ public class Shooting : MonoBehaviour
         trail =>
         {
 
-            trailPrefab.gameObject.SetActive(true);
+            trail.gameObject.SetActive(true);
             trail.transform.position = transform.position;
+            trail.transform.rotation = transform.rotation;
             trail.enabled = true;
         },
         trail =>
         {
             trail.enabled = false;
-            trailPrefab.gameObject.SetActive(false);
+            trail.gameObject.SetActive(false);
         },
         trail =>
         {
@@ -73,6 +79,7 @@ public class Shooting : MonoBehaviour
         if (atackTime <= 0)
         {
             atackTime = atackCuldown;
+            SpawnTrail();
 
             RaycastHit hit;
 
@@ -80,9 +87,8 @@ public class Shooting : MonoBehaviour
             {
                 if (hit.transform.tag == "Enemy")
                 {
-                    hit.transform.GetComponent<Enemy>().TakeDamage(2);
-
-                    SpawnTrail(hit.point);
+                    hit.transform.GetComponent<Enemy>().TakeDamage(damage);
+                    
                 }
             }
         }
@@ -94,11 +100,9 @@ public class Shooting : MonoBehaviour
 
     }
 
-    void SpawnTrail(Vector3 targetPoint)
+    void SpawnTrail()
     {
-        Trail trail                 = pool.Get();
-        trail.transform.position    = transform.position;
-        trail.targetPoint           = targetPoint;
+        pool.Get();
     }
 
     public void DestroyTrail(Trail trail)
