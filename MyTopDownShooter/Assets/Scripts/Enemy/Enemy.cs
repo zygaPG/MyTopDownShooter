@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
 
     public float maxHp;
     float currentHp;
+
     public float moveSpeed;
     public float timeBetweenLooking;
     float currentLookingTime;
@@ -25,21 +26,21 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(Vector3.Distance(transform.position, player.position) > 22)
-        {
-            TakeDamage(500);
-        }
-
         rigidBody.velocity = transform.forward * moveSpeed * 60 * Time.fixedDeltaTime;
 
-        if(currentLookingTime > 0)
-        {
-            currentLookingTime -= Time.deltaTime;
-        }
-        else
+        if(currentLookingTime < 0)
         {
             currentLookingTime = timeBetweenLooking;
             transform.LookAt(player);
+
+            if (Vector3.Distance(transform.position, player.position) > 22)
+            {
+                TakeDamage(500);
+            }
+        }
+        else
+        {
+            currentLookingTime -= Time.deltaTime;
         }
     }
 

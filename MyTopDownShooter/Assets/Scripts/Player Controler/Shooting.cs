@@ -25,8 +25,7 @@ public class Shooting : MonoBehaviour
             trail.transform.rotation = transform.rotation;
 
             trail.shoting = this;
-            return trail;
-            
+            return trail; 
         },
         trail =>
         {
@@ -48,11 +47,7 @@ public class Shooting : MonoBehaviour
         true,
         10,
         20
-
-
         );
-
-
     }
 
 
@@ -64,7 +59,6 @@ public class Shooting : MonoBehaviour
         {
             Fire();
         }
-
 
         if(atackTime > 0)
         {
@@ -88,7 +82,6 @@ public class Shooting : MonoBehaviour
                 if (hit.transform.tag == "Enemy")
                 {
                     hit.transform.GetComponent<Enemy>().TakeDamage(damage);
-                    
                 }
             }
         }
@@ -96,8 +89,6 @@ public class Shooting : MonoBehaviour
         {
             atackTime -= Time.deltaTime;
         }
-
-
     }
 
     void SpawnTrail()

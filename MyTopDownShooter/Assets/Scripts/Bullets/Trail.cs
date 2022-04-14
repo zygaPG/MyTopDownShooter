@@ -16,16 +16,17 @@ public class Trail : MonoBehaviour
     {
         transform.position += transform.forward * speed * Time.deltaTime;
 
-        if (currentTimeToDestroy < timeToDestroy)
+        if (currentTimeToDestroy >= timeToDestroy)
         {
-            currentTimeToDestroy += Time.deltaTime;
+            if (shoting)
+                shoting.DestroyTrail(this);
+
+            currentTimeToDestroy = 0;
+            this.enabled = false;
         }
         else
         {
-            if(shoting)
-            shoting.DestroyTrail(this);
-            currentTimeToDestroy = 0;
-            this.enabled = false;
+            currentTimeToDestroy += Time.deltaTime;
         }
     }
     

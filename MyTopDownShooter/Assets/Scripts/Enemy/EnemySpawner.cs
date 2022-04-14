@@ -5,9 +5,10 @@ public class EnemySpawner : MonoBehaviour
 {
     public Transform playerTarget;
 
-    public int maxEnemy = 5;
-    public int enemyAmount = 0;
-    public int enemyIncrease = 1;
+    public int maxEnemys = 5;
+    public int maxMaxEnemys = 150;
+    public int enemysAmount = 0;
+
     public float enemyTimeToIncrease = 5;
     float currentTime;
 
@@ -44,8 +45,8 @@ public class EnemySpawner : MonoBehaviour
             Destroy(enemy.gameObject);
         },
         true,
-        50,
-        80
+        maxEnemys,
+        maxMaxEnemys
 
 
         );
@@ -56,21 +57,24 @@ public class EnemySpawner : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(enemyAmount < maxEnemy)
+        if(enemysAmount < maxEnemys)
         {
             ChangePosition();
             SpawnEnemy();
-            enemyAmount++;
+            enemysAmount++;
         }
 
-        if(currentTime > 0)
+        if(currentTime <= 0)
         {
-            currentTime -= Time.deltaTime;
+            if (maxEnemys <= maxMaxEnemys)
+            {
+                maxEnemys++;
+                currentTime = enemyTimeToIncrease;
+            }
         }
         else
         {
-            maxEnemy++;
-            currentTime = enemyTimeToIncrease;
+            currentTime -= Time.deltaTime;
         }
     }
 
@@ -80,14 +84,21 @@ public class EnemySpawner : MonoBehaviour
         poolEnemy.Get();
     }
 
+
+    /// <summary>
+    /// destroy enemy
+    /// </summary>
+    /// <param name="curEnemy"></param>
     public void KillEnemy(Enemy curEnemy)
     {
-        enemyAmount--;
+        enemysAmount--;
         poolEnemy.Release(curEnemy);
     }
 
     
-
+    /// <summary>
+    /// random change spawner position 
+    /// </summary>
     public void ChangePosition()
     {
         if(Random.Range(-1f, 1f) > 0)
