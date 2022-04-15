@@ -21,8 +21,8 @@ public class Shooting : MonoBehaviour
     {
         pool = new ObjectPool<Trail>(() =>{
             Trail trail = Instantiate(trailPrefab);
-            trail.transform.position = transform.position;
-            trail.transform.rotation = transform.rotation;
+           // trail.transform.position = transform.position;
+            trail.transform.LookAt(transform);
 
             trail.shoting = this;
             return trail; 
@@ -31,8 +31,8 @@ public class Shooting : MonoBehaviour
         {
 
             trail.gameObject.SetActive(true);
-            trail.transform.position = transform.position;
-            trail.transform.rotation = transform.rotation;
+            //trail.transform.position = transform.position;
+            trail.transform.LookAt(transform);
             trail.enabled = true;
         },
         trail =>
@@ -73,7 +73,7 @@ public class Shooting : MonoBehaviour
         if (atackTime <= 0)
         {
             atackTime = atackCuldown;
-            SpawnTrail();
+            
 
             RaycastHit hit;
 
@@ -81,6 +81,7 @@ public class Shooting : MonoBehaviour
             {
                 if (hit.transform.tag == "Enemy")
                 {
+                    SpawnTrail(hit.point);
                     hit.transform.GetComponent<Enemy>().TakeDamage(damage);
                 }
             }
@@ -91,9 +92,10 @@ public class Shooting : MonoBehaviour
         }
     }
 
-    void SpawnTrail()
+    void SpawnTrail(Vector3 targetPosition)
     {
-        pool.Get();
+       Trail newTrail = pool.Get();
+        newTrail.transform.position = targetPosition;
     }
 
     public void DestroyTrail(Trail trail)

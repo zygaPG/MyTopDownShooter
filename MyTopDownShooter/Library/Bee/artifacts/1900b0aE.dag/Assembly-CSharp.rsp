@@ -431,6 +431,7 @@
 "Assets/Scripts/Bullets/Trail.cs"
 "Assets/Scripts/Enemy/Enemy.cs"
 "Assets/Scripts/Enemy/EnemySpawner.cs"
+"Assets/Scripts/LeveManager.cs"
 "Assets/Scripts/Player Controler/AnimatorControler.cs"
 "Assets/Scripts/Player Controler/Looking.cs"
 "Assets/Scripts/Player Controler/PlayerColider.cs"
